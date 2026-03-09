@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plantas Medicinales — Sabiduría Natural</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde-profundo: #1a2e1a;
+    --verde-musgo: #2d4a2d;
+    --verde-salvia: #4a6741;
+    --verde-menta: #6b8f5e;
+    --crema: #f5f0e8;
+    --pergamino: #ede5d0;
+    --terracota: #c17f4a;
+    --oro: #d4a853;
+    --rojo-baya: #8b3a3a;
+    --texto-oscuro: #1a1a14;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--verde-profundo);
+    color: var(--crema);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* FONDO CON TEXTURA BOTÁNICA */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(74,103,65,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(45,74,45,0.4) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(26,46,26,0.6) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* PATRÓN DE HOJAS SVG COMO FONDO */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236b8f5e' fill-opacity='0.06'%3E%3Cpath d='M40 10 C20 10 10 30 40 50 C70 30 60 10 40 10z'/%3E%3Cpath d='M40 40 C20 40 10 60 40 70 C70 60 60 40 40 40z' transform='rotate(120 40 55)'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { position: relative; z-index: 1; }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 70px 20px 50px;
+    position: relative;
+  }
+
+  .tagline {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    color: var(--verde-menta);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--crema);
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.4s;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--oro);
+  }
+
+  .subtitle {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(245,240,232,0.7);
+    margin-top: 18px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.6s;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 40px auto;
+    max-width: 300px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.8s;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--oro));
+  }
+  .divider-line:last-child {
+    background: linear-gradient(to left, transparent, var(--oro));
+  }
+
+  .divider-leaf {
+    color: var(--oro);
+    font-size: 1.2rem;
+  }
+
+  /* BÚSQUEDA */
+  .search-section {
+    display: flex;
+    justify-content: center;
+    padding: 0 20px 50px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1s;
+  }
+
+  .search-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    background: rgba(245,240,232,0.06);
+    border: 1px solid rgba(212,168,83,0.3);
+    border-radius: 2px;
+    padding: 16px 52px 16px 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--crema);
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+    backdrop-filter: blur(10px);
+  }
+
+  .search-wrap input::placeholder { color: rgba(245,240,232,0.35); font-style: italic; }
+
+  .search-wrap input:focus {
+    border-color: var(--oro);
+    background: rgba(245,240,232,0.09);
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--oro);
+    opacity: 0.7;
+    font-size: 1rem;
+    pointer-events: none;
+  }
+
+  /* FILTROS */
+  .filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 20px 60px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.1s;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid rgba(107,143,94,0.4);
+    color: rgba(245,240,232,0.6);
+    padding: 8px 22px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.25s ease;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--verde-salvia);
+    border-color: var(--verde-salvia);
+    color: var(--crema);
+  }
+
+  .filter-btn.active {
+    background: var(--oro);
+    border-color: var(--oro);
+    color: var(--verde-profundo);
+  }
+
+  /* GRID DE PLANTAS */
+  .plants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1px;
+    padding: 0;
+    background: rgba(107,143,94,0.1);
+    margin: 0 40px 80px;
+    border: 1px solid rgba(107,143,94,0.1);
+  }
+
+  /* TARJETA DE PLANTA */
+  .plant-card {
+    background: var(--verde-profundo);
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  .plant-card:hover { background: rgba(45,74,45,0.8); }
+
+  .plant-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--oro), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .plant-card:hover::before { transform: scaleX(1); }
+
+  .card-inner { padding: 36px 32px; }
+
+  .plant-emoji {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+    transition: transform 0.3s ease;
+  }
+
+  .plant-card:hover .plant-emoji { transform: scale(1.1) rotate(-5deg); }
+
+  .plant-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--crema);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .plant-scientific {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--verde-menta);
+    margin-bottom: 16px;
+    opacity: 0.8;
+  }
+
+  .plant-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 1px;
+    border: 1px solid;
+  }
+
+  .tag-digestivo { border-color: var(--terracota); color: var(--terracota); }
+  .tag-nervioso { border-color: #8b73c4; color: #8b73c4; }
+  .tag-inmune { border-color: #4a9b6f; color: #4a9b6f; }
+  .tag-respiratorio { border-color: #5b9cc4; color: #5b9cc4; }
+  .tag-antiinflamatorio { border-color: var(--oro); color: var(--oro); }
+  .tag-antioxidante { border-color: #c4705b; color: #c4705b; }
+  .tag-circulatorio { border-color: var(--rojo-baya); color: var(--rojo-baya); }
+  .tag-hepatico { border-color: #7ab356; color: #7ab356; }
+
+  .plant-desc {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.65;
+    color: rgba(245,240,232,0.7);
+    margin-bottom: 20px;
+  }
+
+  .benefits-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.92rem;
+    color: rgba(245,240,232,0.65);
+    line-height: 1.4;
+  }
+
+  .benefit-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--oro);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .see-more-btn {
+    margin-top: 24px;
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(212,168,83,0.3);
+    color: var(--oro);
+    padding: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .see-more-btn:hover {
+    background: var(--oro);
+    color: var(--verde-profundo);
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,20,10,0.93);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    backdrop-filter: blur(8px);
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--verde-musgo);
+    max-width: 680px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    border: 1px solid rgba(212,168,83,0.2);
+    position: relative;
+    transform: translateY(30px) scale(0.97);
+    transition: transform 0.4s ease;
+  }
+
+  .modal-overlay.open .modal {
+    transform: translateY(0) scale(1);
+  }
+
+  .modal-header {
+    padding: 48px 48px 32px;
+    border-bottom: 1px solid rgba(107,143,94,0.2);
+    position: relative;
+  }
+
+  .modal-emoji {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .modal-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--crema);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .modal-scientific {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--verde-menta);
+    margin-bottom: 20px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 24px; right: 24px;
+    background: transparent;
+    border: 1px solid rgba(245,240,232,0.2);
+    color: rgba(245,240,232,0.6);
+    width: 36px; height: 36px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .close-btn:hover {
+    background: rgba(245,240,232,0.1);
+    color: var(--crema);
+  }
+
+  .modal-body { padding: 40px 48px; }
+
+  .modal-section { margin-bottom: 36px; }
+
+  .modal-section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--oro);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(212,168,83,0.2);
+  }
+
+  .modal-desc {
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.8);
+  }
+
+  .benefits-full {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .benefit-full-item {
+    background: rgba(26,46,26,0.5);
+    padding: 14px 16px;
+    border-left: 2px solid var(--verde-menta);
+    font-size: 0.9rem;
+    color: rgba(245,240,232,0.75);
+    line-height: 1.4;
+  }
+
+  .warning-box {
+    background: rgba(139,58,58,0.15);
+    border: 1px solid rgba(139,58,58,0.3);
+    padding: 18px 20px;
+    font-size: 0.9rem;
+    color: rgba(245,240,232,0.65);
+    line-height: 1.6;
+  }
+
+  .warning-box strong {
+    color: #e07777;
+    display: block;
+    margin-bottom: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .prep-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .prep-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px;
+    background: rgba(26,46,26,0.4);
+  }
+
+  .prep-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .prep-text { font-size: 0.92rem; color: rgba(245,240,232,0.7); line-height: 1.5; }
+  .prep-text strong { color: var(--crema); font-weight: 400; }
+
+  /* STATS */
+  .stats-strip {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin: 0 40px 80px;
+    border: 1px solid rgba(107,143,94,0.15);
+    background: rgba(107,143,94,0.05);
+  }
+
+  .stat-item {
+    flex: 1;
+    padding: 30px 20px;
+    text-align: center;
+    border-right: 1px solid rgba(107,143,94,0.15);
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--oro);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 50px 20px;
+    border-top: 1px solid rgba(107,143,94,0.1);
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: rgba(245,240,232,0.25);
+    text-transform: uppercase;
+  }
+
+  .no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    opacity: 0.5;
+  }
+
+  .no-results .nr-icon { font-size: 3rem; margin-bottom: 20px; }
+  .no-results p { font-style: italic; font-size: 1.2rem; }
+
+  /* ANIMACIONES */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* SCROLLBAR */
+  .modal::-webkit-scrollbar { width: 4px; }
+  .modal::-webkit-scrollbar-track { background: transparent; }
+  .modal::-webkit-scrollbar-thumb { background: var(--verde-salvia); }
+
+  @media (max-width: 768px) {
+    .plants-grid { margin: 0 16px 60px; }
+    .stats-strip { margin: 0 16px 60px; flex-wrap: wrap; }
+    .stat-item { flex: 1 1 45%; }
+    .modal-header, .modal-body { padding: 28px 24px; }
+    .benefits-full { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <p class="tagline">Herbario Digital · Sabiduría Ancestral</p>
+    <h1>Plantas <em>Medicinales</em></h1>
+    <p class="subtitle">La naturaleza ha curado por milenios. Descubre el poder que guarda cada hoja, raíz y flor.</p>
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-leaf">✦</span>
+      <div class="divider-line"></div>
+    </div>
+  </header>
+
+  <!-- ESTADÍSTICAS -->
+  <div class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-number">12</div>
+      <div class="stat-label">Plantas catalogadas</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">80%</div>
+      <div class="stat-label">Población global las usa</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">5000+</div>
+      <div class="stat-label">Años de historia</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Sabiduría natural</div>
+    </div>
+  </div>
+
+  <!-- BÚSQUEDA -->
+  <div class="search-section">
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Buscar planta o beneficio…" oninput="filterPlants()">
+      <span class="search-icon">⌕</span>
+    </div>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('todos', this)">Todos</button>
+    <button class="filter-btn" onclick="setFilter('digestivo', this)">Digestivo</button>
+    <button class="filter-btn" onclick="setFilter('nervioso', this)">Sistema nervioso</button>
+    <button class="filter-btn" onclick="setFilter('inmune', this)">Inmunidad</button>
+    <button class="filter-btn" onclick="setFilter('respiratorio', this)">Respiratorio</button>
+    <button class="filter-btn" onclick="setFilter('antiinflamatorio', this)">Antiinflamatorio</button>
+    <button class="filter-btn" onclick="setFilter('antioxidante', this)">Antioxidante</button>
+    <button class="filter-btn" onclick="setFilter('circulatorio', this)">Circulatorio</button>
+  </div>
+
+  <!-- GRID DE PLANTAS -->
+  <div class="plants-grid" id="plantsGrid"></div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <button class="close-btn" onclick="closeModalDirect()">✕</button>
+        <span class="modal-emoji" id="modalEmoji"></span>
+        <div class="modal-name" id="modalName"></div>
+        <div class="modal-scientific" id="modalScientific"></div>
+        <div class="plant-tags" id="modalTags"></div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+          <div class="modal-section-title">Descripción</div>
+          <p class="modal-desc" id="modalDesc"></p>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-title">Beneficios para la salud</div>
+          <div class="benefits-full" id="modalBenefits"></div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-title">Formas de preparación</div>
+          <div class="prep-methods" id="modalPrep"></div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-title">Precauciones</div>
+          <div class="warning-box" id="modalWarning"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Herbario Digital — Esta información es educativa. Consulta siempre a un profesional de la salud.</p>
+  </footer>
+</div>
+
+<script>
+const plantas = [
+  {
+    emoji: "🫚",
+    nombre: "Manzanilla",
+    cientifico: "Matricaria chamomilla",
+    tags: ["digestivo", "nervioso", "antiinflamatorio"],
+    descripcionCorta: "La flor de la calma. Aliada milenaria para el sistema digestivo y los nervios alterados.",
+    descripcionLarga: "La manzanilla es una de las plantas medicinales más antiguas y ampliamente utilizadas en el mundo. Sus delicadas flores blancas con centro amarillo contienen flavonoides, terpenos y aceites esenciales que le confieren propiedades excepcionales para el bienestar humano.",
+    beneficios: [
+      "Alivia cólicos y espasmos intestinales",
+      "Reduce la ansiedad y el estrés",
+      "Combate el insomnio leve",
+      "Antiinflamatorio natural",
+      "Calma la gastritis y el reflujo",
+      "Mejora la digestión",
+      "Cicatriza heridas cutáneas",
+      "Alivia dolores menstruales"
+    ],
+    preparacion: [
+      { icono: "🍵", titulo: "Infusión", desc: "2 cucharaditas de flores secas en 250ml de agua caliente, reposar 5-10 min. Tomar 2-3 veces al día." },
+      { icono: "🛁", titulo: "Baño relajante", desc: "Preparar una infusión concentrada y añadirla al agua de baño para aliviar tensión muscular." },
+      { icono: "🧴", titulo: "Compresa tópica", desc: "Aplicar infusión fría sobre piel irritada o heridas superficiales con un paño limpio." }
+    ],
+    precaucion: "⚠️ Precaución · Evitar en personas alérgicas a plantas de la familia Asteraceae. Consultar médico durante el embarazo. No combinar con anticoagulantes sin supervisión médica."
+  },
+  {
+    emoji: "🌿",
+    nombre: "Menta",
+    cientifico: "Mentha piperita",
+    tags: ["digestivo", "respiratorio", "antiinflamatorio"],
+    descripcionCorta: "El frescor que despierta y sana. Poderosa para la digestión y las vías respiratorias.",
+    descripcionLarga: "La menta piperita es un híbrido natural con uno de los aceites esenciales más potentes del reino vegetal: el mentol. Esta molécula es responsable de su característica sensación refrescante y de una amplia gama de propiedades terapéuticas reconocidas por la medicina moderna.",
+    beneficios: [
+      "Alivia náuseas y vómitos",
+      "Descongestiona las vías respiratorias",
+      "Reduce dolores de cabeza tensionales",
+      "Mejora la digestión y reduce gases",
+      "Efecto analgésico tópico",
+      "Estimula la concentración mental",
+      "Combate el síndrome de colon irritable",
+      "Propiedades antimicrobianas"
+    ],
+    preparacion: [
+      { icono: "🍵", titulo: "Té de menta", desc: "10 hojas frescas o 1 cucharadita seca en agua caliente. Reposar 5 min. Ideal después de las comidas." },
+      { icono: "💨", titulo: "Inhalación de vapor", desc: "Añadir unas gotas de aceite esencial en agua caliente e inhalar el vapor para descongestionar." },
+      { icono: "🖐️", titulo: "Aplicación tópica", desc: "Frotar hojas frescas sobre la frente para aliviar dolor de cabeza o sobre músculos contracturados." }
+    ],
+    precaucion: "⚠️ Precaución · No aplicar aceite esencial puro de menta en niños menores de 6 años (puede causar espasmo bronquial). Evitar en casos de reflujo severo. No tomar en grandes cantidades durante el embarazo."
+  },
+  {
+    emoji: "🌼",
+    nombre: "Equinácea",
+    cientifico: "Echinacea purpurea",
+    tags: ["inmune", "antiinflamatorio", "respiratorio"],
+    descripcionCorta: "El escudo natural del sistema inmunitario. Reduce la duración de resfriados e infecciones.",
+    descripcionLarga: "La equinácea es una de las plantas más investigadas científicamente por sus efectos inmunoestimulantes. Originaria de América del Norte, los pueblos nativos la usaban para tratar infecciones. Los compuestos activos como alquilamidas, polisacáridos y glucoproteínas modulan la respuesta inmune de forma natural.",
+    beneficios: [
+      "Estimula y fortalece el sistema inmune",
+      "Reduce duración de resfriados en un 35%",
+      "Propiedades antivirales y antibacterianas",
+      "Acelera la cicatrización de heridas",
+      "Reduce inflamación sistémica",
+      "Protege contra infecciones respiratorias",
+      "Efecto antioxidante celular",
+      "Mejora la respuesta inmune adaptativa"
+    ],
+    preparacion: [
+      { icono: "🍵", titulo: "Infusión de raíz", desc: "Hervir 1 cucharadita de raíz seca 10 min, colar. Tomar hasta 3 tazas diarias al inicio de infección." },
+      { icono: "💊", titulo: "Extracto estandarizado", desc: "Disponible en cápsulas o tintura. Seguir indicaciones del fabricante. Ciclos de 8 semanas." },
+      { icono: "🥤", titulo: "Tintura madre", desc: "30 gotas en agua o jugo, 3 veces al día durante la fase aguda de infección." }
+    ],
+    precaucion: "⚠️ Precaución · No usar más de 8 semanas seguidas. Contraindicada en enfermedades autoinmunes (lupus, artritis reumatoide, esclerosis múltiple). Posibles interacciones con inmunosupresores."
+  },
+  {
+    emoji: "🌱",
+    nombre: "Jengibre",
+    cientifico: "Zingiber officinale",
+    tags: ["digestivo", "antiinflamatorio", "circulatorio"],
+    descripcionCorta: "La raíz del fuego sanador. Potente antiinflamatorio y aliado del sistema digestivo y circulatorio.",
+    descripcionLarga: "El jengibre es una raíz con más de 5,000 años de uso medicinal en culturas asiáticas. Sus principios activos —gingeroles y shogaoles— son comparables en eficacia antiinflamatoria a algunos fármacos, pero con menor toxicidad. Actúa sobre múltiples sistemas corporales de forma simultánea.",
+    beneficios: [
+      "Reduce náuseas (embarazo, quimioterapia)",
+      "Potente antiinflamatorio natural",
+      "Mejora la circulación sanguínea",
+      "Alivia el dolor articular y muscular",
+      "Estimula la digestión",
+      "Reduce el colesterol LDL",
+      "Propiedades antidiabéticas",
+      "Efecto analgésico demostrado"
+    ],
+    preparacion: [
+      { icono: "🍵", titulo: "Infusión fresca", desc: "Hervir 5 rodajas de jengibre fresco en 2 tazas de agua por 10 min. Añadir limón y miel." },
+      { icono: "🥘", titulo: "Uso culinario", desc: "Incorporar jengibre rallado en guisos, sopas y marinadas para obtener beneficios continuos." },
+      { icono: "🧴", titulo: "Cataplasma", desc: "Jengibre rallado mezclado con aceite de oliva, aplicar en articulaciones inflamadas." }
+    ],
+    precaucion: "⚠️ Precaución · Con anticoagulantes (aspirina, warfarina) puede potenciar el efecto. Evitar dosis altas en úlcera péptica activa. Consultar médico antes de cirugía programada."
+  },
+  {
+    emoji: "💛",
+    nombre: "Cúrcuma",
+    cientifico: "Curcuma longa",
+    tags: ["antiinflamatorio", "antioxidante", "hepatico"],
+    descripcionCorta: "El oro de la medicina Ayurvédica. La curcumina es uno de los compuestos antiinflamatorios más estudiados de la naturaleza.",
+    descripcionLarga: "La cúrcuma ha sido durante miles de años la piedra angular de la medicina ayurvédica. Su compuesto estrella, la curcumina, ha sido objeto de más de 12,000 estudios científicos. Modula más de 100 vías metabólicas diferentes, lo que explica su amplio espectro terapéutico.",
+    beneficios: [
+      "Antiinflamatorio de amplio espectro",
+      "Potente antioxidante celular",
+      "Protege el hígado de toxinas",
+      "Reduce riesgo de enfermedades cardíacas",
+      "Propiedades anticancerígenas preventivas",
+      "Mejora la función cerebral (BDNF)",
+      "Alivia síntomas de artritis",
+      "Estabiliza niveles de azúcar en sangre"
+    ],
+    preparacion: [
+      { icono: "☕", titulo: "Leche dorada", desc: "1 cucharadita de cúrcuma, pizca de pimienta negra, leche caliente, miel. Beber antes de dormir." },
+      { icono: "🥤", titulo: "Batido antiinflamatorio", desc: "Combinar con jengibre, limón, pimienta negra y un toque de aceite de coco para mayor absorción." },
+      { icono: "🥘", titulo: "Cocinar diariamente", desc: "Añadir a arroces, guisos, sopas. La piperina de la pimienta aumenta absorción en 2000%." }
+    ],
+    precaucion: "⚠️ Precaución · En dosis altas puede irritar el estómago. Contraindicada en cálculos biliares. Puede interferir con anticoagulantes y quimioterapia. Consultar médico en dosis terapéuticas."
+  },
+  {
+    emoji: "🌺",
+    nombre: "Valeriana",
+    cientifico: "Valeriana officinalis",
+    tags: ["nervioso", "antiinflamatorio"],
+    descripcionCorta: "La planta de los sueños profundos. Sedante natural que restaura el equilibrio del sistema nervioso.",
+    descripcionLarga: "La valeriana ha sido utilizada en Europa como sedante natural desde la época griega y romana. Sus compuestos activos —ácido valerénico, isovalérico y valepotriatos— actúan sobre los receptores GABA del cerebro, el mismo mecanismo de los ansiolíticos farmacéuticos, pero de forma más suave y natural.",
+    beneficios: [
+      "Reduce el tiempo para conciliar el sueño",
+      "Mejora la calidad del sueño profundo",
+      "Disminuye ansiedad y nerviosismo",
+      "Relaja la musculatura",
+      "Alivia cefaleas tensionales",
+      "Reduce síntomas del síndrome premenstrual",
+      "Mejora concentración en TDAH leve",
+      "Disminuye palpitaciones nerviosas"
+    ],
+    preparacion: [
+      { icono: "🍵", titulo: "Infusión nocturna", desc: "1-2 cucharaditas de raíz seca en agua caliente, 10 min. Tomar 30-60 min antes de dormir." },
+      { icono: "💊", titulo: "Cápsulas", desc: "Extracto estandarizado 400-900mg por noche. Efecto máximo tras 2-4 semanas de uso regular." },
+      { icono: "🛁", titulo: "Baño relajante", desc: "Añadir infusión concentrada al baño nocturno para inducir relajación profunda antes de dormir." }
+    ],
+    precaucion: "⚠️ Precaución · No combinar con alcohol, benzodiacepinas o antidepresivos. No usar en menores de 12 años. Puede causar somnolencia diurna. No conducir tras su consumo."
+  },
+  {
+    emoji: "🌾",
+    nombre: "Aloe Vera",
+    cientifico: "Aloe barbadensis miller",
+    tags: ["antiinflamatorio", "antioxidante", "inmune"],
+    descripcionCorta: "La planta de la inmortalidad. Protege, hidrata y regenera tejidos internos y externos.",
+    descripcionLarga: "El aloe vera contiene más de 200 compuestos bioactivos: vitaminas, minerales, enzimas, aminoácidos, acemanano y antraquinonas. Su gel translúcido es una de las sustancias más complejas y terapéuticas del reino vegetal, con aplicaciones que van desde quemaduras hasta la diabetes.",
+    beneficios: [
+      "Cicatriza quemaduras y heridas cutáneas",
+      "Hidrata y regenera la piel",
+      "Alivia el estreñimiento (látex)",
+      "Reduce el azúcar en sangre",
+      "Propiedades antimicrobianas potentes",
+      "Calma irritación gástrica y SIBO",
+      "Fortalece el sistema inmune",
+      "Antiinflamatorio en enfermedades inflamatorias intestinales"
+    ],
+    preparacion: [
+      { icono: "🧴", titulo: "Gel tópico", desc: "Cortar hoja, extraer gel y aplicar directamente sobre piel irritada, quemaduras o heridas." },
+      { icono: "🥤", titulo: "Jugo interno", desc: "30ml de gel puro (sin aloína) en ayunas, diluido en agua o jugo de manzana. Máximo 2 semanas seguidas." },
+      { icono: "🌿", titulo: "Mascarilla capilar", desc: "Aplicar gel en cuero cabelludo 30 min antes del lavado para hidratar y reducir caspa." }
+    ],
+    precaucion: "⚠️ Precaución · El látex amarillo (aloína) es potencialmente tóxico en exceso. No ingerir gel con aloína durante el embarazo. Puede bajar la glucosa en diabéticos; monitorear niveles."
+  },
+  {
+    emoji: "🌸",
+    nombre: "Lavanda",
+    cientifico: "Lavandula angustifolia",
+    tags: ["nervioso", "antiinflamatorio", "circulatorio"],
+    descripcionCorta: "El aroma que sana la mente. La planta aromática más usada en aromaterapia para ansiedad y dolor.",
+    descripcionLarga: "La lavanda es más que su fragancia inconfundible. El linalool y el acetato de linalilo, sus principales componentes, tienen efectos comprobados sobre el sistema nervioso central, comparable en algunos estudios al lorazepam sin sus efectos secundarios. La ciencia moderna valida lo que los provenzales sabían desde siempre.",
+    beneficios: [
+      "Reduce ansiedad y estrés agudo",
+      "Mejora la calidad del sueño",
+      "Alivia dolores de cabeza",
+      "Disminuye la presión arterial",
+      "Propiedades antisépticas tópicas",
+      "Repele insectos naturalmente",
+      "Reduce síntomas depresivos leves",
+      "Alivia dolores musculares en masajes"
+    ],
+    preparacion: [
+      { icono: "💆", titulo: "Aromaterapia", desc: "3-5 gotas de aceite esencial en difusor. O aplicar diluido en aceite portador en sienes y muñecas." },
+      { icono: "🍵", titulo: "Infusión floral", desc: "1 cucharadita de flores secas en agua caliente, 5 min. Ideal como ritual antes de dormir." },
+      { icono: "🛁", titulo: "Baño herbal", desc: "Añadir 10 gotas de aceite esencial o una bolsa de flores secas al agua tibia del baño." }
+    ],
+    precaucion: "⚠️ Precaución · El aceite esencial puro no debe ingerirse. En niños pequeños, usar con precaución (puede tener efectos hormonales en altas dosis). No combinar con sedantes."
+  },
+  {
+    emoji: "🍃",
+    nombre: "Té Verde",
+    cientifico: "Camellia sinensis",
+    tags: ["antioxidante", "circulatorio", "inmune"],
+    descripcionCorta: "La bebida de los centenarios. Los catequinos del té verde protegen el corazón, el cerebro y cada célula del cuerpo.",
+    descripcionLarga: "El té verde es la bebida más estudiada por la ciencia después del agua. Sus polifenoles, especialmente el EGCG (epigalocatequina galato), son 100 veces más potentes que la vitamina C como antioxidantes. Japón, donde más se consume, tiene una de las tasas de longevidad más altas del mundo.",
+    beneficios: [
+      "Protege el corazón y vasos sanguíneos",
+      "Previene el deterioro cognitivo",
+      "Quema grasa y acelera metabolismo",
+      "Reduce riesgo de diabetes tipo 2",
+      "Potente antioxidante anticancerígeno",
+      "Mejora el rendimiento cerebral",
+      "Reduce el colesterol LDL oxidado",
+      "Propiedades antibacterianas bucales"
+    ],
+    preparacion: [
+      { icono: "🍵", titulo: "Té verde clásico", desc: "Agua a 75-80°C (no hirviendo), reposar 2-3 min. 2-4 tazas diarias para efectos óptimos." },
+      { icono: "🧊", titulo: "Matcha frío", desc: "Batir 1-2 gramos de matcha en agua fría con batidor de bambú. Rico en L-teanina." },
+      { icono: "🥤", titulo: "Combinación potenciada", desc: "Añadir limón y jengibre para triplicar la absorción de catequinos." }
+    ],
+    precaucion: "⚠️ Precaución · Contiene cafeína; evitar en horas nocturnas y en hipertensos sensibles. No tomar con el estómago vacío en gastritis. El extracto concentrado en suplementos puede ser hepatotóxico en dosis altas."
+  },
+  {
+    emoji: "🌻",
+    nombre: "Ashwagandha",
+    cientifico: "Withania somnifera",
+    tags: ["nervioso", "antiinflamatorio", "inmune"],
+    descripcionCorta: "El adaptógeno rey de la medicina ayurvédica. Equilibra el cortisol, la energía y la respuesta al estrés.",
+    descripcionLarga: "La ashwagandha es el adaptógeno más potente de la tradición ayurvédica india, donde su nombre significa 'olor de caballo' refiriéndose a la fortaleza que confiere. Los withanólidos, sus compuestos activos, modulan el eje HPA (hipotálamo-hipófisis-suprarrenal), regulando la respuesta hormonal al estrés crónico.",
+    beneficios: [
+      "Reduce el cortisol hasta en un 30%",
+      "Aumenta la resistencia al estrés",
+      "Mejora el rendimiento físico y muscular",
+      "Equilibra hormonas reproductivas",
+      "Mejora la memoria y función cognitiva",
+      "Reduce ansiedad y depresión leve",
+      "Aumenta la producción de testosterona",
+      "Mejora la fertilidad masculina"
+    ],
+    preparacion: [
+      { icono: "🥛", titulo: "Leche con ashwagandha", desc: "1 cucharadita de polvo en leche tibia con miel y cardamomo. Tomar por la noche." },
+      { icono: "💊", titulo: "Extracto en cápsulas", desc: "300-600mg de extracto estandarizado al 5% de withanólidos, con las comidas." },
+      { icono: "🥤", titulo: "Smoothie adaptogénico", desc: "Mezclar 1 cucharadita en batido de plátano, cacao y mantequilla de almendras." }
+    ],
+    precaucion: "⚠️ Precaución · Contraindicada en embarazo (puede estimular contracciones). Evitar en enfermedades autoinmunes y tiroideas. Puede potenciar efectos de sedantes y antidiabéticos."
+  },
+  {
+    emoji: "🟡",
+    nombre: "Diente de León",
+    cientifico: "Taraxacum officinale",
+    tags: ["hepatico", "digestivo", "antioxidante"],
+    descripcionCorta: "La maleza que sana el hígado. Cada parte de esta planta es un medicamento: raíz, hoja y flor.",
+    descripcionLarga: "Considerada maleza por muchos, el diente de león es una de las plantas medicinales más completas. Sus hojas son más ricas en vitaminas A, C y K que muchas verduras cultivadas. La raíz contiene inulina prebiótica y compuestos amargos que estimulan la función hepática y biliar de forma notable.",
+    beneficios: [
+      "Depura y protege el hígado",
+      "Estimula la producción de bilis",
+      "Poderoso diurético natural",
+      "Rico en vitaminas A, C, K y B",
+      "Prebiótico natural (inulina)",
+      "Reduce la retención de líquidos",
+      "Regula la glucosa en sangre",
+      "Propiedades antiinflamatorias sistémicas"
+    ],
+    preparacion: [
+      { icono: "🍵", titulo: "Infusión de raíz", desc: "Hervir 1 cucharadita de raíz seca 5 min. Tomar 2-3 tazas al día en curas de depuración." },
+      { icono: "🥗", titulo: "Hojas en ensalada", desc: "Usar hojas jóvenes frescas como verdura. Sabor amargo que estimula las enzimas digestivas." },
+      { icono: "☕", titulo: "Café de raíz tostada", desc: "La raíz tostada y molida como sustituto del café. Sin cafeína y beneficioso para el hígado." }
+    ],
+    precaucion: "⚠️ Precaución · Evitar en obstrucción de vesícula o vías biliares. Su efecto diurético puede alterar medicamentos. En alérgicos a Asteraceae puede causar reacción cutánea."
+  },
+  {
+    emoji: "🌿",
+    nombre: "Romero",
+    cientifico: "Rosmarinus officinalis",
+    tags: ["circulatorio", "antioxidante", "nervioso"],
+    descripcionCorta: "La planta de la memoria y la circulación. El romero despierta la mente, activa el cuerpo y protege las células.",
+    descripcionLarga: "El romero es mucho más que una hierba culinaria. Su aceite esencial, rico en 1,8-cineol y alcanfor, tiene efectos demostrados sobre el flujo sanguíneo cerebral. Estudios de la Universidad de Northumbria hallaron mejoras del 75% en velocidad mental tras exposición al aroma de romero.",
+    beneficios: [
+      "Mejora la memoria y concentración",
+      "Activa la circulación sanguínea",
+      "Antioxidante poderoso (ácido rosmarínico)",
+      "Estimula el crecimiento del cabello",
+      "Alivia dolores musculares y articulares",
+      "Propiedades antibacterianas y antifúngicas",
+      "Mejora la digestión de grasas",
+      "Efecto antidepresivo suave"
+    ],
+    preparacion: [
+      { icono: "🍵", titulo: "Infusión estimulante", desc: "2-3 ramitas en agua caliente, 5 min. Tomar por las mañanas para activar cuerpo y mente." },
+      { icono: "💆", titulo: "Aceite para el cuero cabelludo", desc: "Macerar romero fresco en aceite de oliva 4 semanas. Aplicar en masaje capilar semanal." },
+      { icono: "🧴", titulo: "Tintura para circulación", desc: "Frotar infusión concentrada fría sobre piernas cansadas o zonas con mala circulación." }
+    ],
+    precaucion: "⚠️ Precaución · En dosis muy altas (no culinarias) puede ser tóxico. Contraindicado en epilepsia en altas concentraciones. No usar aceite esencial puro internamente. Evitar en embarazo en dosis medicinales."
+  }
+];
+
+let filtroActual = 'todos';
+
+function renderPlants(lista) {
+  const grid = document.getElementById('plantsGrid');
+  grid.innerHTML = '';
+
+  if (lista.length === 0) {
+    grid.innerHTML = `<div class="no-results"><div class="nr-icon">🍃</div><p>No se encontraron plantas con ese criterio.</p></div>`;
+    return;
+  }
+
+  lista.forEach((planta, i) => {
+    const tagsHTML = planta.tags.map(t => `<span class="tag tag-${t}">${t}</span>`).join('');
+    const beneficiosHTML = planta.beneficios.slice(0, 3).map(b =>
+      `<div class="benefit-item"><div class="benefit-dot"></div><span>${b}</span></div>`
+    ).join('');
+
+    const card = document.createElement('div');
+    card.className = 'plant-card';
+    card.style.animationDelay = `${i * 0.06}s`;
+    card.innerHTML = `
+      <div class="card-inner">
+        <span class="plant-emoji">${planta.emoji}</span>
+        <div class="plant-name">${planta.nombre}</div>
+        <div class="plant-scientific">${planta.cientifico}</div>
+        <div class="plant-tags">${tagsHTML}</div>
+        <p class="plant-desc">${planta.descripcionCorta}</p>
+        <div class="benefits-preview">${beneficiosHTML}</div>
+        <button class="see-more-btn" onclick="openModal(${plantas.indexOf(planta)})">
+          Ver ficha completa →
+        </button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function filterPlants() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  let lista = plantas;
+
+  if (filtroActual !== 'todos') {
+    lista = lista.filter(p => p.tags.includes(filtroActual));
+  }
+
+  if (query) {
+    lista = lista.filter(p =>
+      p.nombre.toLowerCase().includes(query) ||
+      p.descripcionCorta.toLowerCase().includes(query) ||
+      p.beneficios.some(b => b.toLowerCase().includes(query)) ||
+      p.tags.some(t => t.includes(query))
+    );
+  }
+
+  renderPlants(lista);
+}
+
+function setFilter(filtro, btn) {
+  filtroActual = filtro;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterPlants();
+}
+
+function openModal(idx) {
+  const p = plantas[idx];
+  document.getElementById('modalEmoji').textContent = p.emoji;
+  document.getElementById('modalName').textContent = p.nombre;
+  document.getElementById('modalScientific').textContent = p.cientifico;
+  document.getElementById('modalDesc').textContent = p.descripcionLarga;
+
+  const tagsHTML = p.tags.map(t => `<span class="tag tag-${t}">${t}</span>`).join('');
+  document.getElementById('modalTags').innerHTML = tagsHTML;
+
+  const beneficiosHTML = p.beneficios.map(b =>
+    `<div class="benefit-full-item">${b}</div>`
+  ).join('');
+  document.getElementById('modalBenefits').innerHTML = beneficiosHTML;
+
+  const prepHTML = p.preparacion.map(pr =>
+    `<div class="prep-item">
+      <span class="prep-icon">${pr.icono}</span>
+      <div class="prep-text"><strong>${pr.titulo}:</strong> ${pr.desc}</div>
+    </div>`
+  ).join('');
+  document.getElementById('modalPrep').innerHTML = prepHTML;
+
+  document.getElementById('modalWarning').innerHTML = `<strong>⚠ Advertencia</strong>${p.precaucion}`;
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModalDirect();
+});
+
+// Inicializar
+renderPlants(plantas);
+</script>
+</body>
+</html>
